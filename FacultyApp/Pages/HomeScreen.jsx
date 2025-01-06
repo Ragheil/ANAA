@@ -8,12 +8,16 @@ const HomeScreen = ({ navigation }) => {
 
   const handleStatusChange = async (newStatus) => {
     try {
-      await axios.put(`http://localhost:3001/faculty/${user.id}/status`, { availability: newStatus });
+      await axios.put(`http://localhost:3001/faculty/${user.user_id}/status`, { availability: newStatus });
       setUser({ ...user, availability: newStatus });
     } catch (error) {
       console.error('Error updating status:', error);
     }
   };
+
+  if (!user) {
+    return <Text>Loading...</Text>; // Show loading state if user data is not yet loaded
+  }
 
   return (
     <View style={styles.container}>

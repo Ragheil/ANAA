@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 
 const app = express();
 const port = 3001; // Port where the server will run
+const host = '0.0.0.0';  // Listen on all interfaces
+
 
 // PostgreSQL connection configuration
 const pool = new Pool({
@@ -169,4 +171,70 @@ app.delete("/faculty/:id", async (req, res) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
+});
+
+
+
+// Fetch faculty data by user_id
+app.get("/faculty/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+  console.log(`Fetching faculty data for user_id: ${user_id}`);
+
+  try {
+    const facultyQuery = `
+      SELECT * FROM tbl_faculty WHERE user_id = $1;
+    `;
+    const facultyResult = await pool.query(facultyQuery, [user_id]);
+
+    if (facultyResult.rows.length === 0) {
+      console.log(`No faculty found for user_id: ${user_id}`);
+      return res.status(404).json({ message: "Faculty not found" });
+    }
+
+    const faculty = facultyResult.rows[0];
+    res.status(200).json(faculty);
+  } catch (error) {
+    console.error("Error fetching faculty data:", error);
+    res.status(500).json({ message: "Failed to fetch faculty data" });
+  }
+});
+
+
+
+app.get('/get-ip', (req, res) => {
+  console.log(req.ip); // Logs the IP of the device
+  res.send({ ip: req.ip });
+});
+
+
+
+
+// Update faculty availability
+app.put("/faculty/:id/availability", async (req, res) => {
+  const { id } = req.params;
+  const { availability } = req.body; // New availability status
+
+  try {
+    if (![0, 1, 2].includes(availability)) {
+      return res.status(400).json({ message: "Invalid availability status" });
+    }
+
+    const updateQuery = `
+      UPDATE tbl_faculty
+      SET availability = $1
+      WHERE user_id = $2
+      RETURNING *;
+    `;
+    const result = await pool.query(updateQuery, [availability, id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Faculty member not found" });
+    }
+
+    const updatedFaculty = result.rows[0];
+    res.status(200).json({ message: "Availability updated successfully", faculty: updatedFaculty });
+  } catch (error) {
+    console.error("Error updating availability:", error);
+    res.status(500).json({ message: "Failed to update availability" });
+  }
 });

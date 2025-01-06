@@ -16,7 +16,7 @@ export default function LoginScreen({ navigation }) {
         password,
       });
       console.log('Login response:', response.data);
-  
+
       if (response.data.message === 'Login successful') {
         // Store all user and faculty info in context
         const userInfo = {
@@ -24,10 +24,11 @@ export default function LoginScreen({ navigation }) {
           name: response.data.name,
           email: response.data.email,
           faculty: response.data.facultyInfo, // Get all faculty info from response
+          availability: response.data.availability, // Example: Add availability from login response
         };
         setUser(userInfo); // Update user context
-        navigation.navigate('Home', { user: userInfo });
-        setPassword('')
+        navigation.navigate('Home'); // Navigate to the HomeScreen
+        setPassword(''); // Clear the password field
       } else {
         console.log('Login failed:', response.data.message);
         Alert.alert('Login Failed', 'Invalid email or password');
