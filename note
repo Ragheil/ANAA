@@ -1,0 +1,10 @@
+Frontend-elogging (web), 
+
+faculty-app (mobile)
+
+
+Color code sya ayy, available (green), 
+busy (orange), offline (red). 
+Ang default nila na status kay ang busy (orange), 
+so like if pag sulod nila sa office, 
+ma detect ang rfid tag kay ang ila status kay busy (by default)

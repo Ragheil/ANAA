@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
 
 const HomeScreen = ({ route, navigation }) => {
   console.log('Route Params:', route.params); // Debug route params
@@ -34,10 +35,29 @@ const HomeScreen = ({ route, navigation }) => {
         },
         {
           text: 'OK',
-          onPress: () => setSelectedAvailability(newAvailability),
+          onPress: () => {
+            // Update the faculty availability in the database
+            updateAvailability(newAvailability);
+            setSelectedAvailability(newAvailability);
+          },
         },
       ]
     );
+  };
+
+  // Function to update the faculty availability in the database
+  const updateAvailability = async (newAvailability) => {
+    try {
+        const response = await axios.put(
+            `http://192.168.1.179:3001/update-availability/${facultyInfo.id}`, // change according to ip address 
+            { availability: newAvailability }
+          );
+          
+      console.log('Availability updated:', response.data);
+    } catch (error) {
+      console.error('Error updating availability:', error);
+      Alert.alert('Error', 'Failed to update availability');
+    }
   };
 
   // If facultyInfo is not available, show the input form
@@ -102,9 +122,9 @@ const HomeScreen = ({ route, navigation }) => {
       <Text style={styles.title}>Welcome, {facultyInfo.firstname}!</Text>
       <Text style={styles.info}>Email: {user.email}</Text>
       <Text style={styles.info}>First Name: {facultyInfo.firstname}</Text>
-      <Text style={styles.info}>Middle Name: {facultyInfo.middle}</Text>
+     {/*  <Text style={styles.info}>Middle Name: {facultyInfo.middle}</Text>*/}
       <Text style={styles.info}>Last Name: {facultyInfo.lastname}</Text>
-      <Text style={styles.info}>Age: {facultyInfo.age}</Text>
+      {/* <Text style={styles.info}>Age: {facultyInfo.age}</Text>*/}
       <Text style={styles.info}>RFID: {facultyInfo.rfid}</Text>
 
       {/* Picker for availability */}
@@ -115,9 +135,9 @@ const HomeScreen = ({ route, navigation }) => {
         onValueChange={(itemValue) => handleAvailabilityChange(itemValue)}
       >
         <Picker.Item label="Select Availability" value="" />
-        <Picker.Item label="1" value="1" />
-        <Picker.Item label="2" value="2" />
-        <Picker.Item label="3" value="3" />
+        <Picker.Item label="Offline" value="0" />
+        <Picker.Item label="Available" value="1" />
+        <Picker.Item label="Busy" value="2" />
       </Picker>
 
       <Text style={styles.info}>Status: {facultyInfo.status}</Text>
