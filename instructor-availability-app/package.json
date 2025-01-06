@@ -1,0 +1,14 @@
+{
+  "name": "instructor-availability",
+  "version": "1.0.0",
+  "description": "Instructor Availability Status Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^25.0.0"
+  }
+}

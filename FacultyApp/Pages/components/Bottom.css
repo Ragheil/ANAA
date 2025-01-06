@@ -1,0 +1,24 @@
+/* BottomBar.css */
+.bottom-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff; /* Background color */
+    border-top: 1px solid #ccc; /* Top border */
+    position: fixed; /* Fixed at the bottom */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* Height of the bottom bar */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.nav-item {
+    text-decoration: none; /* No underline */
+    color: #333; /* Text color */
+    font-weight: bold; /* Bold text */
+}
+
+.nav-item:hover {
+    color: #007bff; /* Color on hover */
+}

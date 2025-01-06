@@ -1,0 +1,146 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0d1025; /* Dark blue background */
+    color: #fff; /* White text */
+    overflow: hidden;
+  }
+  
+  /* Background Shapes */
+  .background-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  
+  .shape {
+    position: absolute;
+    background-color: #3a3e54; /* Gray for the shapes */
+  }
+  
+  .shape.top-left {
+    width: 50px;
+    height: 150px;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .shape.bottom-left {
+    width: 100px;
+    height: 30px;
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .shape.bottom-right {
+    width: 50px;
+    height: 200px;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  /* Main Container */
+  .container {
+    padding: 20px;
+    max-width: 1200px; /* Increase max-width */
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  /* Header Section */
+  .header .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    color: #ffff00; /* Yellow */
+  }
+  
+  .header h1 {
+    font-size: 32px; /* Increase font size */
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .header p {
+    font-size: 16px; /* Increase font size */
+    color: #c2c2c2;
+    margin-bottom: 30px;
+  }
+  
+  /* Availability Status Section */
+  .availability-status {
+    display: flex;
+    justify-content: center; /* Center the status containers */
+    gap: 40px; /* Increase gap */
+    text-align: left;
+  }
+  
+  .status {
+    flex: 1;
+    padding: 50px; /* Increase padding */
+    border-radius: 10px;
+    background-color: #1c1f38; /* Slightly lighter blue for status sections */
+    max-width: 400px; /* Set a max-width for each status container */
+  }
+  
+  .status h2 {
+    font-size: 32px; /* Increase font size */
+    margin-bottom: 20px; /* Increase margin */
+  }
+  
+  .status ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .status li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 24px; /* Increase font size */
+    margin-bottom: 20px; /* Increase margin */
+  }
+  
+  /* Section Headings Colors */
+  .status.available h2 {
+    color: #00ff6a; /* Green */
+  }
+  
+  .status.busy h2 {
+    color: #ff9900; /* Orange */
+  }
+  
+  .status.offline h2 {
+    color: #ff4d4d; /* Red */
+  }
+  
+  /* Dots for Status */
+  .dot {
+    width: 25px; /* Increase dot size */
+    height: 25px; /* Increase dot size */
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .dot.green {
+    background-color: #00ff6a;
+  }
+  
+  .dot.orange {
+    background-color: #ff9900;
+  }
+  
+  .dot.red {
+    background-color: #ff4d4d;
+  }
+  
+  /* Logo Styling */
+  .logo-img {
+    height: 60px; /* Increase logo height */
+    width: auto;  /* Automatically adjust the width to maintain the aspect ratio */
+    margin-right: 10px; /* Add some spacing between the logo and the text */
+  }

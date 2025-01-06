@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instructor Availability</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-shapes">
+    <div class="shape top-left"></div>
+    <div class="shape bottom-left"></div>
+    <div class="shape bottom-right"></div>
+  </div>
+
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header">
+      <div class="logo">
+        <img 
+          src="C:/Users/Braggy/Downloads/ANAA Code  (1)/instructor-availability-app/anaa_syslogo.jpg" 
+          alt="Logo" 
+          class="logo-img"
+        >
+        <span>Availability Notification System</span>
+      </div>
+      <h1>Instructor Availability Status</h1>
+      <p id="datetime"></p>
+    </div>
+    <!-- Availability Status Section -->
+    <div class="availability-status">
+      <div class="status available">
+        <h2>Available</h2>
+        <ul id="available-list"></ul>
+      </div>
+      <div class="status busy">
+        <h2>Busy</h2>
+        <ul id="busy-list"></ul>
+      </div>
+      <div class="status offline">
+        <h2>Offline</h2>
+        <ul id="offline-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const datetimeElement = document.getElementById('datetime');
+      datetimeElement.textContent = now.toLocaleString();
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    async function fetchStatus() {
+      try {
+        const response = await fetch('http://localhost:3001/faculty');
+        const data = await response.json();
+
+        const availableList = document.getElementById('available-list');
+        const busyList = document.getElementById('busy-list');
+        const offlineList = document.getElementById('offline-list');
+
+        availableList.innerHTML = '';
+        busyList.innerHTML = '';
+        offlineList.innerHTML = '';
+
+        data.forEach(faculty => {
+          const li = document.createElement('li');
+          li.textContent = `${faculty.firstname} ${faculty.lastname}`;
+          const span = document.createElement('span');
+          span.classList.add('dot');
+
+          if (faculty.availability === 1) {
+            li.className = 'available';
+            span.classList.add('green');
+            availableList.appendChild(li);
+          } else if (faculty.availability === 2) {
+            li.className = 'busy';
+            span.classList.add('orange');
+            busyList.appendChild(li);
+          } else {
+            li.className = 'offline';
+            span.classList.add('red');
+            offlineList.appendChild(li);
+          }
+
+          li.appendChild(span);
+        });
+      } catch (error) {
+        console.error('Error fetching faculty status:', error);
+      }
+    }
+
+    setInterval(fetchStatus, 5000);
+    fetchStatus();
+  </script>
+</body>
+</html>
