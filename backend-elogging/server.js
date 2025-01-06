@@ -238,3 +238,65 @@ app.put("/faculty/:id/availability", async (req, res) => {
     res.status(500).json({ message: "Failed to update availability" });
   }
 });
+
+
+
+// Update faculty availability
+app.put("/update-availability/:facultyId", async (req, res) => {
+  const { facultyId } = req.params;
+  const { availability } = req.body; // Availability value passed in the request body
+
+  if (availability === undefined) {
+    return res.status(400).json({ message: "Availability is required" });
+  }
+
+  try {
+    // Update the availability in the tbl_faculty table
+    const query = `
+      UPDATE tbl_faculty
+      SET availability = $1
+      WHERE id = $2
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [availability, facultyId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Faculty not found" });
+    }
+
+    const updatedFaculty = result.rows[0];
+    res.status(200).json({ message: "Availability updated successfully", faculty: updatedFaculty });
+  } catch (error) {
+    console.error("Error updating availability:", error);
+    res.status(500).json({ message: "Error updating availability" });
+  }
+});
+
+
+
+// Endpoint to update availability
+app.put("/update-availability/:id", async (req, res) => {
+  const { id } = req.params;
+  const { availability } = req.body;
+
+  try {
+    const updateQuery = `
+      UPDATE tbl_faculty
+      SET availability = $1
+      WHERE id = $2
+      RETURNING *;
+    `;
+    const updateValues = [availability, id];
+
+    const result = await pool.query(updateQuery, updateValues);
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ message: "Availability updated successfully", faculty: result.rows[0] });
+    } else {
+      res.status(404).json({ message: "Faculty not found" });
+    }
+  } catch (error) {
+    console.error("Error updating availability:", error);
+    res.status(500).json({ message: "Error updating availability" });
+  }
+});
